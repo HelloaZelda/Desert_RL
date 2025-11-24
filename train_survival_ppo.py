@@ -25,7 +25,7 @@ env = DummyVecEnv([make_env])
 # PPO Configuration (stable for this env)
 # -------------------------------------------
 model = PPO(
-    policy="MlpPolicy",
+    policy="MultiInputPolicy",
     env=env,
     verbose=1,
     learning_rate=3e-4,
