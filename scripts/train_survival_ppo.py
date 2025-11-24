@@ -1,9 +1,18 @@
 import os
+import sys
+from pathlib import Path
+
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv
 
-from desert_env_survival import DesertGoldSurvivalEnv
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT))
+
+from envs.desert_env_survival import DesertGoldSurvivalEnv
+
+
+DATA_DIR = ROOT / "data"
 
 
 # -------------------------------------------
@@ -11,8 +20,8 @@ from desert_env_survival import DesertGoldSurvivalEnv
 # -------------------------------------------
 def make_env():
     env = DesertGoldSurvivalEnv(
-        edges_path="map_edges.json",
-        nodes_path="map_nodes.json",
+        edges_path=str(DATA_DIR / "map_edges.json"),
+        nodes_path=str(DATA_DIR / "map_nodes.json"),
         max_days=50
     )
     return Monitor(env)
@@ -25,7 +34,7 @@ env = DummyVecEnv([make_env])
 # PPO Configuration (stable for this env)
 # -------------------------------------------
 model = PPO(
-    policy="MlpPolicy",
+    policy="MultiInputPolicy",
     env=env,
     verbose=1,
     learning_rate=3e-4,
@@ -79,8 +88,8 @@ while current_steps < TOTAL_TIMESTEPS:
     # Evaluate once after each training cycle
     # ---------------------------------------
     eval_env = DesertGoldSurvivalEnv(
-        edges_path="map_edges.json",
-        nodes_path="map_nodes.json"
+        edges_path=str(DATA_DIR / "map_edges.json"),
+        nodes_path=str(DATA_DIR / "map_nodes.json")
     )
     obs, _ = eval_env.reset()
     done = False

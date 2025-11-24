@@ -49,7 +49,6 @@ class DesertGoldEnv(gym.Env):
         self.observation_space = spaces.Box(
             low=0, high=2000, shape=(18,), dtype=np.float32
         )
-kk
         self.action_space = spaces.Discrete(18)
 
         # team states

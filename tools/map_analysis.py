@@ -1,6 +1,11 @@
 import json
-import networkx as nx
+from pathlib import Path
+
 import matplotlib.pyplot as plt
+import networkx as nx
+
+ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = ROOT / "data"
 
 def plot_trajectory(edges, trajectory):
     G = nx.Graph()
