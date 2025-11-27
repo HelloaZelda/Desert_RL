@@ -1,11 +1,20 @@
 import os
+import sys
 import time
+from pathlib import Path
+
 import numpy as np
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv
 
-from desert_env_full import DesertGoldEnv
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT))
+
+from envs.desert_env_full import DesertGoldEnv
+
+
+DATA_DIR = ROOT / "data"
 
 
 # -------------------------------------------
@@ -13,8 +22,8 @@ from desert_env_full import DesertGoldEnv
 # -------------------------------------------
 def make_env():
     env = DesertGoldEnv(
-        edges_path="map_edges.json",
-        nodes_path="map_nodes.json",
+        edges_path=str(DATA_DIR / "map_edges.json"),
+        nodes_path=str(DATA_DIR / "map_nodes.json"),
         num_teams=1,
         max_days=40
     )
@@ -76,8 +85,8 @@ while step < TOTAL:
 
     # Evaluate environment once and record a trajectory
     eval_env = DesertGoldEnv(
-        edges_path="map_edges.json",
-        nodes_path="map_nodes.json"
+        edges_path=str(DATA_DIR / "map_edges.json"),
+        nodes_path=str(DATA_DIR / "map_nodes.json")
     )
     obs, _ = eval_env.reset()
     done = False

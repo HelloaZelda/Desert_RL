@@ -3,12 +3,14 @@
 This repository contains reinforcement learning environments and training scripts for the Desert Gold survival game. The main environment `DesertGoldSurvivalEnv` implements the A.2 rule set described in the bundled rules document, including phased progression (outbound, mining, return), weather-driven survival pressure, inventory weight tracking, and shaped rewards that encourage reaching and mining the gold site before returning safely to camp.
 
 ## Repository layout
-- `desert_env_survival.py` — single-agent Gymnasium environment following the A.2 survival rules with dict observations and 25-action space.
-- `desert_env_full.py` — earlier/full-version environment with additional features beyond A.2.
-- `train_survival_ppo.py` — example PPO training script using the survival environment and a `MultiInputPolicy` compatible with dict observations.
-- `train_ppo.py` — baseline PPO training driver for the full environment.
-- `map_edges.json` and `map_nodes.json` — map topology and node metadata used by the environments.
-- `map_analysis.py` and `map_visualize.py` — utilities for inspecting and visualizing the map structure.
+- `envs/` — Gymnasium environments
+  - `desert_env_survival.py` — single-agent A.2 survival rules with dict observations and 25-action space.
+  - `desert_env_full.py` — earlier/full-version environment with additional features beyond A.2.
+- `scripts/` — training entry points
+  - `train_survival_ppo.py` — PPO training for the survival environment using a `MultiInputPolicy` compatible with dict observations.
+  - `train_ppo.py` — baseline PPO driver for the full environment.
+- `data/` — map resources (`map_edges.json`, `map_nodes.json`).
+- `tools/` — utilities for inspecting and visualizing the map graph.
 
 ## Quick start
 1. Install dependencies (Gymnasium, Stable Baselines3, and supporting libraries). A minimal setup:
@@ -17,11 +19,11 @@ This repository contains reinforcement learning environments and training script
    ```
 2. Verify the code compiles:
    ```bash
-   python -m compileall desert_env_survival.py train_survival_ppo.py
+   python -m compileall envs scripts
    ```
-3. Train an agent on the survival environment:
+3. Train an agent on the survival environment (run from the repository root):
    ```bash
-   python train_survival_ppo.py
+   python scripts/train_survival_ppo.py
    ```
    The script loads the map files, instantiates `DesertGoldSurvivalEnv`, and runs PPO training with default hyperparameters.
 
